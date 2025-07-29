@@ -1,0 +1,117 @@
+/* App.css */
+
+/* Full‑screen & reset */
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: Arial, sans-serif;
+}
+
+/* Default & themed backgrounds */
+body.theme-default {
+  background: #8fbf8f;
+}
+body.theme-sunny {
+  background: linear-gradient(to bottom, #ffe47a, #ffb74d);
+}
+body.theme-rainy {
+  background: linear-gradient(to bottom, #76c7ff, #005bea);
+}
+body.theme-cloudy {
+  background: linear-gradient(to bottom, #bdc3c7, #34495e);
+}
+
+/* Center container */
+.App {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+.container {
+  width: 360px;
+  background: rgba(255,255,255,0.3);
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+/* Search bar with accent border */
+.search-bar {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+.search-bar input {
+  flex: 1;
+  padding: 0.5rem 1rem;
+  border: 2px solid #444;           /* darker accent */
+  border-radius: 20px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+.search-bar input:focus {
+  border-color: #222;               /* on focus */
+}
+
+/* Shrinked search button/icon */
+.search-bar button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+.search-bar button img {
+  width: 24px;                       /* smaller icon */
+  height: 24px;
+}
+
+/* Current weather */
+.weather-current img {
+  width: 80px;
+  height: 80px;
+}
+
+/* Forecast row */
+.forecast-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+.forecast-card {
+  flex: 1 1 30%;
+  background: rgba(255,255,255,0.4);
+  border-radius: 6px;
+  padding: 0.75rem;
+}
+.forecast-card img {
+  width: 50px;
+  height: 50px;
+}
+
+/* Fade‑in */
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 0.6s ease-in forwards;
+}
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+/* Mobile tweaks */
+@media (max-width: 480px) {
+  .container {
+    width: 90%;
+    padding: 1rem;
+  }
+  .forecast-card {
+    flex: 1 1 100%;
+  }
+  .forecast-card img {
+    width: 60px;
+    height: 60px;
+  }
+}
