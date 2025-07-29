@@ -30,4 +30,3 @@ API: OpenWeatherMap (Current + Forecast endpoint)
 
 🧠 Inspiration
 This app is inspired by modern weather dashboards with minimalistic design and functional UI. It’s great for practicing React, API integration, and responsive CSS.
->>>>>>> eb50838
