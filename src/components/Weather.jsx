@@ -1,7 +1,7 @@
 // src/components/Weather.jsx
 import './Weather.css';
 import { useEffect, useState } from 'react';
-import './Weather.css'; // we’ll create this
+import './Weather.css';
 import searchIcon from '../assets/searchicon.jpg';
 
 const Weather = ({ city, apiKey }) => {
@@ -9,26 +9,49 @@ const Weather = ({ city, apiKey }) => {
   const [forecast, setForecast] = useState([]);
 
   useEffect(() => {
-    if (!city) return;
+    if (!city) {
+      document.body.className = 'theme-default'; // set default background
+      return;
+    }
+
+    // reset theme until we know the result
+    document.body.className = 'theme-default';
+    setCurrent(null);
+    setForecast([]);
 
     // 1) current weather
     fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`)
       .then(res => res.json())
-      .then(setCurrent)
-      .catch(console.error);
+      .then(data => {
+        setCurrent(data);
 
-    // 2) 5‑day forecast (every 3 h; we’ll pick one reading per day)
+        if (data.cod !== 200) {
+          document.body.className = 'app-not-found'; // not found background
+          return;
+        }
+
+        const theme = {
+          Clear: 'theme-sunny',
+          Rain: 'theme-rainy',
+          Clouds: 'theme-cloudy'
+        }[data.weather[0].main] || 'theme-default';
+
+        document.body.className = theme;
+      })
+      .catch(() => {
+        document.body.className = 'app-not-found';
+      });
+
+    // 2) 5‑day forecast
     fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${apiKey}`)
       .then(res => res.json())
       .then(json => {
-        // group by date, pick midday reading
         const daily = {};
         json.list.forEach(item => {
           const date = item.dt_txt.split(' ')[0];
           const hour = +item.dt_txt.split(' ')[1].slice(0,2);
           if (hour === 12) daily[date] = item;
         });
-        // take next 5 days
         setForecast(Object.values(daily).slice(0, 5));
       })
       .catch(console.error);
@@ -37,7 +60,6 @@ const Weather = ({ city, apiKey }) => {
   if (!current) return <p>Enter a city name above…</p>;
   if (current.cod !== 200) return <p>City not found.</p>;
 
-  // format date
   const todayStr = new Date().toLocaleDateString('en-US', {
     weekday:'long', day:'numeric', month:'long'
   });

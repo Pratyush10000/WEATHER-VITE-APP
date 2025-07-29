@@ -6,6 +6,7 @@ html, body, #root {
   padding: 0;
   height: 100%;
   font-family: Arial, sans-serif;
+  box-sizing: border-box;
 }
 
 /* Default & themed backgrounds */
@@ -27,10 +28,12 @@ body.theme-cloudy {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100%;
+  min-height: 100vh; /* Better on mobile than fixed height */
+  padding: 1rem;
 }
 .container {
   width: 360px;
+  max-width: 100%;
   background: rgba(255,255,255,0.3);
   border-radius: 8px;
   padding: 1.5rem;
@@ -45,17 +48,16 @@ body.theme-cloudy {
 }
 .search-bar input {
   flex: 1;
-  padding: 0.5rem 1rem;
-  border: 2px solid #444;           /* darker accent */
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  border: 2px solid #444;
   border-radius: 20px;
   outline: none;
   transition: border-color 0.3s;
 }
 .search-bar input:focus {
-  border-color: #222;               /* on focus */
+  border-color: #222;
 }
-
-/* Shrinked search button/icon */
 .search-bar button {
   background: none;
   border: none;
@@ -63,8 +65,8 @@ body.theme-cloudy {
   padding: 0;
 }
 .search-bar button img {
-  width: 24px;                       /* smaller icon */
-  height: 24px;
+  width: 28px;
+  height: 28px;
 }
 
 /* Current weather */
@@ -103,15 +105,77 @@ body.theme-cloudy {
 
 /* Mobile tweaks */
 @media (max-width: 480px) {
+  .App {
+    align-items: flex-start;
+    padding-top: 2rem;
+  }
+
   .container {
-    width: 90%;
+    width: 100%;
     padding: 1rem;
   }
+
+  .search-bar input {
+    font-size: 0.9rem;
+    padding: 0.5rem 0.8rem;
+  }
+
+  .search-bar button img {
+    width: 24px;
+    height: 24px;
+  }
+
+  .weather-current img {
+    width: 60px;
+    height: 60px;
+  }
+
   .forecast-card {
     flex: 1 1 100%;
+    margin-bottom: 0.5rem;
   }
+
   .forecast-card img {
     width: 60px;
     height: 60px;
   }
+}
+
+
+/* Default background when no city is searched */
+.app-default {
+  background: linear-gradient(to right, #6dd5fa, #2980b9); /* calm blue */
+  min-height: 100vh;
+  padding: 2rem;
+  color: white;
+  transition: background 0.4s ease-in-out;
+}
+
+/* Background when city is not found */
+.app-not-found {
+  background: linear-gradient(to right, #ff5f6d, #ffc371); /* warning red-orange */
+  min-height: 100vh;
+  padding: 2rem;
+  color: white;
+  transition: background 0.4s ease-in-out;
+}
+
+/* Background when nothing is searched */
+.theme-default {
+  background: linear-gradient(to right, #6dd5fa, #2980b9); /* soft calm blue */
+}
+
+/* Background when city not found */
+.app-not-found {
+  background: linear-gradient(to right, #ff6a00, #ee0979); /* red-pink alert tone */
+}
+
+/* Background when no city is typed */
+.theme-default {
+  background: linear-gradient(to right, #6dd5fa, #2980b9); /* calm blue */
+}
+
+/* Background when city not found */
+.app-not-found {
+  background: linear-gradient(to right, #ff6a00, #ee0979); /* red-pink alert */
 }

@@ -12,6 +12,11 @@ export default function App() {
   const [forecast, setForecast] = useState([])
   const [error, setError] = useState('')
 
+  // Set default background initially
+  useEffect(() => {
+    document.body.className = 'theme-default'
+  }, [])
+
   // Debounce typing
   const debouncedQuery = useCallback(
     debounce(val => setQuery(val), 500),
@@ -21,7 +26,11 @@ export default function App() {
   useEffect(() => () => debouncedQuery.cancel(), [debouncedQuery])
 
   useEffect(() => {
-    if (!query) return
+    if (!query) {
+      document.body.className = 'theme-default' // show calm background when empty
+      return
+    }
+
     setError('')
     setCurrent(null)
     setForecast([])
@@ -34,10 +43,11 @@ export default function App() {
       .then(data => {
         if (data.cod !== 200) {
           setError('City not found')
+          document.body.className = 'app-not-found' // custom "not found" background
           return
         }
+
         setCurrent(data)
-        // Set theme class on <body>
         const theme = {
           Clear: 'theme-sunny',
           Rain: 'theme-rainy',
@@ -45,9 +55,12 @@ export default function App() {
         }[data.weather[0].main] || 'theme-default'
         document.body.className = theme
       })
-      .catch(() => setError('Network error'))
+      .catch(() => {
+        setError('Network error')
+        document.body.className = 'app-not-found'
+      })
 
-    // 5‑day forecast fetch
+    // Forecast fetch
     fetch(
       `https://api.openweathermap.org/data/2.5/forecast?q=${query}&units=metric&appid=${API_KEY}`
     )
